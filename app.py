@@ -11,7 +11,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config.from_object(Config)
 app.config['SQLALCHEMY_DATABASE_URI'] =  os.getenv("DATABASE_URL")
-CORS(app, resources={r"/*": {"origins": "http://162.19.154.218:6200"}})
+CORS(app, resources={r"/*": {"origins": "http://167.86.121.140:8000"}})
 db.init_app(app)
 
 migrate = Migrate(app, db)  # Initialiser Migrate avec l'application et la base de données
