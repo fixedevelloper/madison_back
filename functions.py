@@ -107,6 +107,7 @@ def get_team_stats(team_name,league_id,league_sesson):
 
         stats = {
             'matches_played': 0,
+            'form':'',
             'wins': 0,
             'draws': 0,
             'losses': 0,
@@ -121,19 +122,25 @@ def get_team_stats(team_name,league_id,league_sesson):
                 stats['goals_conceded'] += match.goal_away
                 if match.goal_home > match.goal_away:
                     stats['wins'] += 1
+                    stats['form'] += 'W'
                 elif match.goal_home < match.goal_away:
                     stats['losses'] += 1
+                    stats['form'] += 'L'
                 else:
                     stats['draws'] += 1
+                    stats['form'] += 'D'
             else:
                 stats['goals_scored'] += match.goal_away
                 stats['goals_conceded'] += match.goal_home
                 if match.goal_away > match.goal_home:
                     stats['wins'] += 1
+                    stats['form'] += 'W'
                 elif match.goal_away < match.goal_home:
                     stats['losses'] += 1
+                    stats['form'] += 'L'
                 else:
                     stats['draws'] += 1
+                    stats['form'] += 'D'
 
         return stats
 #print_standings(list(standing_team(39,2020).values()))
