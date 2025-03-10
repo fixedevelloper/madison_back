@@ -3,7 +3,7 @@ from flask import Blueprint, jsonify, request
 from sqlalchemy import alias
 from sqlalchemy.orm import aliased
 
-from functions import get_team_stats, standing_team
+from functions import get_team_stats, standing_team, viewStanding
 from models import Prediction, db, Fixture, League
 
 bp = Blueprint('routes', __name__)
@@ -40,8 +40,8 @@ def get_fixture(id):
     if prediction:
         stat_home=get_team_stats(prediction.fixture.team_home_name,prediction.fixture.league_id,prediction.fixture.league_season)
         stat_away = get_team_stats(prediction.fixture.team_away_name, prediction.fixture.league_id, prediction.fixture.league_season)
-        classement= list(standing_team(prediction.fixture.league_id,prediction.fixture.league_season))
-        return jsonify({'prediction': prediction.to_dict() ,'stat_home': stat_home,'stat_away': stat_away,'classement': classement})
+        classements= viewStanding(list(standing_team(prediction.fixture.league_id, prediction.fixture.league_season).values()))
+        return jsonify({'prediction': prediction.to_dict() ,'stat_home': stat_home,'stat_away': stat_away,'classement': classements})
     return jsonify({'message': 'Fixture not found'}), 404
 @bp.route('/leagues', methods=['GET'])
 def getTopLeague ():

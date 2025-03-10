@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
 import os
+from operator import countOf
+
 from dotenv import load_dotenv
 import flask
 from sqlalchemy import desc
@@ -49,7 +51,24 @@ def print_standings(teams):
     for position, team in enumerate(teams, start=1):
         print(f"{position:<10} {team.name:<20} {team.points:<10} {team.goal_difference():<20} {team.goals_scored:<15} {team.matches_played:<15}")
 
-# Connexion à la base de données
+def viewStanding(teams):
+
+    teams.sort(key=lambda t: (t.points, t.goal_difference(), t.goals_scored), reverse=True)
+    list=[]
+    for position,team in enumerate(teams, start=1):
+        list.append({
+            "position": position,
+            "team": team.name,
+            "points": team.points,
+            "goal_difference": team.goal_difference(),
+            "goals_scored": team.goals_scored,
+            "matches_played": team.matches_played,
+            "wins": team.wins,
+            "draws": team.draws,
+            "losses": team.losses,
+            "goals_conceded": team.goals_conceded,
+        })
+    return list
 
 
 
@@ -129,3 +148,6 @@ def get_team_stats(team_name,league_id,league_sesson):
 # print(f"Perdus : {team_stats['losses']}")
 # print(f"Buts marqués : {team_stats['goals_scored']}")
 # print(f"Buts encaissés : {team_stats['goals_conceded']}")
+#list=viewStanding(list(standing_team(39,2020).values()))
+# for stat in list:
+#     print(stat)
