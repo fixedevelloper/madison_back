@@ -92,13 +92,8 @@ def load_fixture(date_match):
     else:
         print(f"Erreur lors de la récupération des données: {response}")
 
-
-dates=[datetime.now()-timedelta(days=80),datetime.now()-timedelta(days=80), datetime.now()]
-for date in dates:
-    load_fixture(date.strftime("%Y-%m-%d"))
-
-date_debut = datetime(2025, 3, 8)
-date_fin = datetime(2025, 1, 8)
+date_debut = datetime(2025, 1, 8)
+date_fin = datetime(2024, 10, 8)
 
 # Utiliser une boucle pour itérer sur chaque date de l'intervalle
 current_date = date_fin

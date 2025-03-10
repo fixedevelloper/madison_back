@@ -24,8 +24,8 @@ headers = {
 }
 
 
-def load_fixture(date_fixture):
-    response = requests.get(base_url + f'fixtures?date='+date_fixture, headers=headers)
+def load_fixture():
+    response = requests.get(base_url + f'fixtures?live=all', headers=headers)
     if response.status_code == 200:
         data = response.json()
         fixtures = data['response']
@@ -84,5 +84,5 @@ def load_fixture(date_fixture):
                 db.session.close()
     else:
         print(f"Erreur lors de la récupération des données: {response}")
-date =datetime.now()
-load_fixture(date.strftime('%Y-%m-%d'))
+
+load_fixture()
