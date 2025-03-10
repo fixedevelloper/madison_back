@@ -84,5 +84,5 @@ def load_fixture(date_fixture):
                 db.session.close()
     else:
         print(f"Erreur lors de la récupération des données: {response}")
-date =datetime.now()
+date =datetime.now()- timedelta(days=1)
 load_fixture(date.strftime('%Y-%m-%d'))

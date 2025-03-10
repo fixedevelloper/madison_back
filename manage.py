@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-dates=[datetime.now(),datetime.now()+timedelta(days=1)]
+dates=[datetime.now(),datetime.now()-timedelta(days=1)]
 for date in dates:
     print(date.strftime("%Y-%m-%d"))
 

@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import flask
 import numpy as np
 import pandas as pd
-from sqlalchemy import func, or_
+from sqlalchemy import func, or_, desc
 from config import Config
 from models import Fixture, Prediction,db
 from scipy.stats import poisson
@@ -18,23 +18,23 @@ db.init_app(app)
 
 def team_scoring_prediction(fixture:Fixture):
      #try: 
-      average_homeH=db.session.query(func.avg(Fixture.goal_home)).filter(or_(Fixture.team_away_id==fixture.team_home_id, Fixture.team_home_id==fixture.team_home_id,Fixture.st_short=='FT')).order_by(Fixture.date).scalar() or 0.0
-      average_homeA=db.session.query(func.avg(Fixture.goal_away)).filter(or_(Fixture.team_away_id==fixture.team_home_id, Fixture.team_home_id==fixture.team_home_id,Fixture.st_short=='FT')).order_by(Fixture.date).scalar() or 0.0
+      average_homeH=db.session.query(func.avg(Fixture.goal_home)).filter(or_(Fixture.team_away_id==fixture.team_home_id, Fixture.team_home_id==fixture.team_home_id,Fixture.st_short=='FT')).order_by(Fixture.date,desc(Fixture.date)).scalar() or 0.0
+      average_homeA=db.session.query(func.avg(Fixture.goal_away)).filter(or_(Fixture.team_away_id==fixture.team_home_id, Fixture.team_home_id==fixture.team_home_id,Fixture.st_short=='FT')).order_by(Fixture.date,desc(Fixture.date)).scalar() or 0.0
       average_home=(Decimal(average_homeA)+Decimal(average_homeH))/2
       #average_is_home=db.session.query(func.avg(Fixture.goal_home)).filter_by(team_home_id=fixture.team_home_id).order_by(Fixture.date).scalar()
 
-      average_home_concededH=db.session.query(func.avg(Fixture.goal_away)).filter_by(team_home_id=fixture.team_home_id,st_short='FT').order_by(Fixture.date).scalar()or 0.0
-      average_home_concededA=db.session.query(func.avg(Fixture.goal_home)).filter_by(team_away_id=fixture.team_home_id,st_short='FT').order_by(Fixture.date).scalar() or 0.0
+      average_home_concededH=db.session.query(func.avg(Fixture.goal_away)).filter_by(team_home_id=fixture.team_home_id,st_short='FT').order_by(Fixture.date,desc(Fixture.date)).scalar()or 0.0
+      average_home_concededA=db.session.query(func.avg(Fixture.goal_home)).filter_by(team_away_id=fixture.team_home_id,st_short='FT').order_by(Fixture.date,desc(Fixture.date)).scalar() or 0.0
       average_home_conceded=(Decimal(average_home_concededH)+Decimal(average_home_concededA))/2
 #####################################################################################################################
 
-      average_awayH=db.session.query(func.avg(Fixture.goal_home)).filter(or_(Fixture.team_away_id==fixture.team_away_id, Fixture.team_home_id==fixture.team_away_id),Fixture.st_short=='FT').order_by(Fixture.date).scalar() or 0.0
-      average_awayA=db.session.query(func.avg(Fixture.goal_away)).filter(or_(Fixture.team_away_id==fixture.team_away_id, Fixture.team_home_id==fixture.team_away_id),Fixture.st_short=='FT').order_by(Fixture.date).scalar() or 0.0
+      average_awayH=db.session.query(func.avg(Fixture.goal_home)).filter(or_(Fixture.team_away_id==fixture.team_away_id, Fixture.team_home_id==fixture.team_away_id),Fixture.st_short=='FT').order_by(Fixture.date,desc(Fixture.date)).scalar() or 0.0
+      average_awayA=db.session.query(func.avg(Fixture.goal_away)).filter(or_(Fixture.team_away_id==fixture.team_away_id, Fixture.team_home_id==fixture.team_away_id),Fixture.st_short=='FT').order_by(Fixture.date,desc(Fixture.date)).scalar() or 0.0
       average_away=(Decimal(average_awayH)+Decimal(average_awayA))/2
       #average_is_away=db.session.query(func.avg(Fixture.goal_away)).filter_by(team_away_id=fixture.team_away_id).order_by(Fixture.date).scalar()
 
-      average_away_concededH=db.session.query(func.avg(Fixture.goal_away)).filter_by(team_home_id=fixture.team_away_id,st_short='FT').order_by(Fixture.date).scalar() or 0.0
-      average_away_concededA=db.session.query(func.avg(Fixture.goal_home)).filter_by(team_away_id=fixture.team_away_id,st_short='FT').order_by(Fixture.date).scalar() or 0.0
+      average_away_concededH=db.session.query(func.avg(Fixture.goal_away)).filter_by(team_home_id=fixture.team_away_id,st_short='FT').order_by(Fixture.date,desc(Fixture.date)).scalar() or 0.0
+      average_away_concededA=db.session.query(func.avg(Fixture.goal_home)).filter_by(team_away_id=fixture.team_away_id,st_short='FT').order_by(Fixture.date,desc(Fixture.date)).scalar() or 0.0
       average_away_conceded=((Decimal(average_away_concededH)+Decimal(average_away_concededA))/2)
       if average_home>0.0 and average_away>0.0 and average_away_conceded>0.0 and average_home_conceded>0.0:
             
@@ -126,25 +126,25 @@ def prediction(date_prediction):
             print(home_4, g)
 
             home_5, g =goal_prob(5,home_team_poission)
-            print(home_5, g)
+            #print(home_5, g)
         ####################################
             away_0, g = goal_prob(0,away_team_poission)
-            print(away_0, g)
+            #print(away_0, g)
 
             away_1, g = goal_prob(1,away_team_poission)
-            print(away_1, g)
+           # print(away_1, g)
 
             away_2, g = goal_prob(2,away_team_poission)
-            print(away_2, g)
+            #print(away_2, g)
 
             away_3, g = goal_prob(3,away_team_poission)
-            print(away_3, g)
+            #print(away_3, g)
 
             away_4, g = goal_prob(4,away_team_poission)
-            print(away_4, g)
+            #print(away_4, g)
 
             away_5, g = goal_prob(5,away_team_poission)
-            print(away_5, g)
+            #print(away_5, g)
             home_chance = [home_0, home_1, home_2, home_3, home_4, home_5]
             home_chance_frame = pd.DataFrame(home_chance, columns=['Probs'])
             home_chance_frame = home_chance_frame
@@ -159,21 +159,21 @@ def prediction(date_prediction):
             df_cross = home_chance_frame.dot(away_chance_frame.T)
             df_cross = df_cross.round(3)
             principal = printDiagonalSums(df_cross, 5)
-            print(principal)
+            #print(principal)
 
             df_cross_up = df_cross.where(np.triu(np.ones(df_cross.shape)).astype(np.bool))
-            print(df_cross_up)
+            #print(df_cross_up)
             draw = principal
 
             home_team_win = df_cross.sum().sum() - df_cross_up.sum().sum()
             away_team_win = df_cross_up.sum().sum() - principal
 
 
-            print("machineball home win chance: " + str(np.round(home_team_win, 3)*100))
-            print("machineball draw chance: " + str(np.round(draw, 3)*100))
-            print("machineball away chance: " + str(np.round(away_team_win, 3)*100))
-
-            print("machineball total chance: " + str(np.round(home_team_win, 3)*100 + np.round(draw, 3)*100 + np.round(away_team_win, 3)*100))
+            # print("machineball home win chance: " + str(np.round(home_team_win, 3)*100))
+            # print("machineball draw chance: " + str(np.round(draw, 3)*100))
+            # print("machineball away chance: " + str(np.round(away_team_win, 3)*100))
+            #
+            # print("machineball total chance: " + str(np.round(home_team_win, 3)*100 + np.round(draw, 3)*100 + np.round(away_team_win, 3)*100))
 
             prediction=Prediction.query.filter_by(fixture_id=f.id).first()
             if not prediction:
