@@ -92,8 +92,8 @@ def load_fixture(date_match):
     else:
         print(f"Erreur lors de la récupération des données: {response}")
 
-date_debut = datetime(2024, 10, 8)
-date_fin = datetime(2024, 8, 8)
+date_debut = datetime(2024, 8, 8)
+date_fin = datetime(2024, 10, 8)
 
 # Utiliser une boucle pour itérer sur chaque date de l'intervalle
 current_date = date_fin

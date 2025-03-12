@@ -126,31 +126,30 @@ def prediction(date_prediction):
             print(home_4, g)
 
             home_5, g =goal_prob(5,home_team_poission)
-            #print(home_5, g)
+            print(home_5, g)
         ####################################
             away_0, g = goal_prob(0,away_team_poission)
-            #print(away_0, g)
+            print(away_0, g)
 
             away_1, g = goal_prob(1,away_team_poission)
-           # print(away_1, g)
+            print(away_1, g)
 
             away_2, g = goal_prob(2,away_team_poission)
-            #print(away_2, g)
+            print(away_2, g)
 
             away_3, g = goal_prob(3,away_team_poission)
-            #print(away_3, g)
+            print(away_3, g)
 
             away_4, g = goal_prob(4,away_team_poission)
-            #print(away_4, g)
+            print(away_4, g)
 
             away_5, g = goal_prob(5,away_team_poission)
-            #print(away_5, g)
+            print(away_5, g)
             home_chance = [home_0, home_1, home_2, home_3, home_4, home_5]
             home_chance_frame = pd.DataFrame(home_chance, columns=['Probs'])
             home_chance_frame = home_chance_frame
             home_chance_frame
-
-
+            print('*************away*************')
             away_chance= [away_0, away_1, away_2, away_3, away_4, away_5]
             away_chance_frame = pd.DataFrame(away_chance, columns=['Probs'])
             away_chance_frame = away_chance_frame
@@ -159,10 +158,11 @@ def prediction(date_prediction):
             df_cross = home_chance_frame.dot(away_chance_frame.T)
             df_cross = df_cross.round(3)
             principal = printDiagonalSums(df_cross, 5)
-            #print(principal)
+            print('principal: ' + str(principal))
+            print(principal)
 
             df_cross_up = df_cross.where(np.triu(np.ones(df_cross.shape)).astype(np.bool))
-            #print(df_cross_up)
+            print(df_cross_up)
             draw = principal
 
             home_team_win = df_cross.sum().sum() - df_cross_up.sum().sum()
@@ -190,5 +190,7 @@ def prediction(date_prediction):
             #db.session.close()
 
 dates=[datetime.now(), datetime.now() + timedelta(days=1)]
-for date in dates:
-    prediction(date.strftime("%Y-%m-%d"))
+# for date in dates:
+#     prediction(date.strftime("%Y-%m-%d"))
+
+prediction(datetime(2025,2,25).strftime("%Y-%m-%d"))
