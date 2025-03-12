@@ -190,7 +190,7 @@ def prediction(date_prediction):
             #db.session.close()
 
 dates=[datetime.now(), datetime.now() + timedelta(days=1)]
-# for date in dates:
-#     prediction(date.strftime("%Y-%m-%d"))
+for date in dates:
+     prediction(date.strftime("%Y-%m-%d"))
 
-prediction(datetime(2025,2,25).strftime("%Y-%m-%d"))
+#prediction(datetime(2025,2,25).strftime("%Y-%m-%d"))
